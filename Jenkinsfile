@@ -2,7 +2,7 @@ pipeline {
   agent any
  
   stages {
-    stage('Create project') {
+    stage('Generating Bitstream') {
       steps {
         deleteDir() // clean up workspace
         checkout([$class: 'GitSCM', branches: [[name: '*/master']],
@@ -15,13 +15,8 @@ pipeline {
             trackingSubmodules: true]],
           submoduleCfg: [],
           userRemoteConfigs: [[
-            url: 'https://github.com/jonasjj/Jenkins-demo-bcd_encoder']]])
-        sh 'cd vivado && vivado -mode batch -source create_vivado_proj.tcl'
-      }
-    }
-    stage('Run simulation') {
-      steps {
-        sh 'cd vivado && vivado -mode batch -source run_simulation.tcl'
+            url: 'https://github.com/vivekladhe37/auto_script']]])
+        sh 'vivado -mode batch -source updated_script_file.tcl && compile uart'
       }
     }
   }
